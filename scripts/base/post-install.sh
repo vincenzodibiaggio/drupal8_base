@@ -20,4 +20,4 @@ mv -f .gitignore.final .gitignore
 
 # Remove Git related files and directories
 rm -r .git
-rm Readme.md
+rm README.md

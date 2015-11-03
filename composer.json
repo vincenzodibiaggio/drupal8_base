@@ -38,6 +38,9 @@
       "scripts/base/post-install.sh"
     ]
   },
+  "config": {
+    "bin-dir": "bin/"
+  },
   "extra": {
     "installer-paths": {
       "web/core": ["type:drupal-core"],

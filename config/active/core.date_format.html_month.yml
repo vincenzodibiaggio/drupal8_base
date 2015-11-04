@@ -1,8 +1,0 @@
-uuid: 19bfdd8c-a721-4f92-8400-c69eb280a8a7
-langcode: en
-status: true
-dependencies: {  }
-id: html_month
-label: 'HTML Month'
-locked: true
-pattern: Y-m

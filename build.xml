@@ -1,25 +1,34 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<project name="perofil_ecommerce" default="dummy">
-  <property name="console" value="bin/console"/>
+<project name="Drupal 8 Base" default="dummy">
+
+  <target name="drupal-installation" if="env">
+    <echo msg="Take a wile..."/>
+    <echo msg="${db.host}"/>
+    <exec command="./../bin/console site:install --db-host='${db.host}' --db-port='${db.port}' --db-user='${db.user.name}' --db-pass='${db.user.pass}' --db-type='${db.type}' --db-name='${db.name}' --db-prefix='${db.prefix}' --site-name='${site.name}' --langcode='${site.langcode}'  --site-mail='${site.mail}' --account-name='${site.avvount.name}' --account-mail='${site.account.mail}' --account-pass='${site.account.pass}' Standard" dir="web" passthru="true" outputProperty="drupal.install.output" />
+    <echo msg="Drupal install output: ${drupal.install.output}"/>
+  </target>
 
   <target name="generate-settings" if="env">
     <chmod file="web/sites/${settings.directory.source}" mode="755" verbose="true" />
     <chmod file="web/sites/${settings.directory.destination}" mode="755" verbose="true" />
     <mkdir dir="web/sites/${settings.directory.source}" />
     <mkdir dir="web/sites/${settings.directory.destination}" />
-    <copy file="web/sites/${settings.directory.source}/default.settings.php" tofile="sites/${settings.directory.source}/settings.php" overwrite="true">
+    <copy file="web/sites/${settings.directory.source}/default.settings.php.dist" tofile="web/sites/${settings.directory.source}/settings.php" overwrite="true">
       <filterchain>
         <replacetokens begintoken="%%" endtoken="%%">
-          <token key="DB_NAME" value="${source.db.name}" />
-          <token key="DB_USER_NAME" value="${source.db.user.name}" />
-          <token key="DB_USER_PASS" value="${source.db.user.pass}" />
-          <token key="DB_HOST" value="${source.db.host}" />
-          <token key="DB_PORT" value="${source.db.port}" />
+          <token key="DB_NAME" value="${db.name}" />
+          <token key="DB_USER_NAME" value="${db.user.name}" />
+          <token key="DB_USER_PASS" value="${db.user.pass}" />
+          <token key="DB_HOST" value="${db.host}" />
+          <token key="DB_PORT" value="${db.port}" />
+          <token key="DB_PREFIX" value="${db.prefix}" />
           <token key="SETTINGS_INSTALL_PROFILE" value="${site.profile}" />
         </replacetokens>
       </filterchain>
     </copy>
+
+    <copy file="web/sites/${settings.directory.source}/default.services.yml.dist" tofile="web/sites/${settings.directory.source}/services.yml" overwrite="true" />
 
     <if>
       <available file='web/sites/${settings.directory.destination}' type='dir' />
@@ -28,18 +37,6 @@
         <chmod file="web/sites/${settings.directory.destination}" mode="755" verbose="true" failonerror="false"/>
       </then>
     </if>
-    <copy file="web/sites/${settings.directory.source}/default.settings.php" tofile="web/sites/${settings.directory.destination}/settings.php" overwrite="true">
-      <filterchain>
-        <replacetokens begintoken="%%" endtoken="%%">
-          <token key="DB_NAME" value="${source.db.name}" />
-          <token key="DB_USER_NAME" value="${source.db.user.name}" />
-          <token key="DB_USER_PASS" value="${source.db.user.pass}" />
-          <token key="DB_HOST" value="${source.db.host}" />
-          <token key="DB_PORT" value="${source.db.port}" />
-          <token key="SETTINGS_INSTALL_PROFILE" value="${site.profile}" />
-        </replacetokens>
-      </filterchain>
-    </copy>
   </target>
 
   <target name="generate-sites" if="env">
@@ -49,7 +46,6 @@
       <filterchain>
         <replacetokens begintoken="%%" endtoken="%%">
           <token key="SITES_DOMAIN" value="${domain}" />
-          <!-- INVESTIGATE -->
           <token key="SITES_DESTINATION" value="${settings.directory.destination}" />
         </replacetokens>
       </filterchain>
@@ -88,5 +84,6 @@
     <property file="build.${env}.properties" />
     <phingcall target="generate-settings" />
     <phingcall target="generate-sites" />
+    <phingcall target="drupal-installation" />
   </target>
 </project>

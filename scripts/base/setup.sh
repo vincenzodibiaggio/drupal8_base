@@ -1,4 +1,5 @@
 #!/bin/sh
 
-mkdir -P config/active
+mkdir config
+mkdir config/active
 mkdir config/staging

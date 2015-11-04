@@ -717,14 +717,4 @@ $config_directories = array(
   CONFIG_STAGING_DIRECTORY => './../config/staging/',
 );
 
-$databases['default']['default'] = array (
-  'database' => '%%DB_NAME%%',
-  'username' => '%%DB_USER_NAME%%',
-  'password' => '%%DB_USER_PASS%%',
-  'prefix' => '%%DB_PREFIX%%',
-  'host' => '%%DB_HOST%%',
-  'port' => '%%DB_PORT%%',
-  'namespace' => 'Drupal\\Core\\Database\\Driver\\mysql',
-  'driver' => 'mysql',
-);
 $settings['install_profile'] = '%%SETTINGS_INSTALL_PROFILE%%';

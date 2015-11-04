@@ -26,7 +26,8 @@
     "behat/mink-goutte-driver": "~1.2",
     "mikey179/vfsStream": "~1.2",
     "phpunit/phpunit": "~4.8",
-    "symfony/css-selector": "2.7.*"
+    "symfony/css-selector": "2.7.*",
+    "phing/phing": "3.*"
   },
   "minimum-stability": "dev",
   "prefer-stable": true,

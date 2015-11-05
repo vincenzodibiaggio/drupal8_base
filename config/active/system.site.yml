@@ -1,0 +1,12 @@
+uuid: d824b41a-44a6-44fd-874b-75b9337dfc7d
+name: '"My new Drupal 8"'
+mail: your.email@example.com
+slogan: ''
+page:
+  403: ''
+  404: ''
+  front: /node
+admin_compact_mode: false
+weight_select_max: 100
+langcode: en
+default_langcode: en

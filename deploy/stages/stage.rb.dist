@@ -60,22 +60,32 @@
 #     # password: 'please use keys'
 #   }
 
-set :user, "vincenzodb"
-
-set :stage , :loc
-set :branch, "develop"
+set :stage , :stage
+set :branch, 'develop'
+set :user, 'YOUR_STAGE_USER'
 
 # used in case we're deploying multiple versions of the same
 # app side by side. Also provides quick sanity checks when looking
 # at filepaths
+set :deploy_to, "YOUR_STAGE_APP_PATH/#{fetch(:application)}/"
 
-set :deploy_to, "/home/vincenzodb/Development/#{fetch(:application)}"
-# path of application. tipically where execute commands.
-set :app_dir, "#{fetch(:deploy_to)}/web"
+# Current release path.
+set :current_path, "#{fetch(:deploy_to)}current/"
+
+# Path of application. Tipically where execute commands that need an highter bootstrap level.
+set :app_dir, "#{fetch(:current_path)}web"
+
+# Config export from locale to remote. Set to true if you need it.
+set :export_local_config, true
+# Set true if you want that Drushistrano export local config for you.
+# Drushistrano will connect to your localhost via ssh!
+set :export_local_config_via_ssh, true
+# Where exported config file will be saved.
+set :export_config_directory, "#{fetch(:current_path)}"
 
 set :use_sudo, false
-set :domains, ["loc"]
-set :default_domain, "loc"
+set :domains, ['stage']
+set :default_domain, 'stage'
 
-role :web, %w{localhost}, user: fetch(:user), primary: true
-role :app, %w{localhost}, user: fetch(:user), primary: true
+role :web, %w{YOUR_STAGE_HOST}, user: fetch(:user), primary: true
+role :app, %w{YOUR_STAGE_HOST}, user: fetch(:user), primary: true

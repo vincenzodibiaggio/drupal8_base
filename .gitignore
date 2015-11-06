@@ -39,5 +39,7 @@ web/sites/example.sites.php
 build.loc.properties
 !web/autoload.php
 
-# Configs
-web/config.tar.gz
+# Drushistrano
+deploy/stages/production.rb
+deploy/stages/stage.rb
+deploy/stages/loc.rb

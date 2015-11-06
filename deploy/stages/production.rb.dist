@@ -61,7 +61,7 @@
 #   }
 
 set :stage , :production
-set :branch, "master"
+set :branch, 'master'
 
 set :application, 'sparkadmin'
 
@@ -71,11 +71,19 @@ set :application, 'sparkadmin'
 
 set :deploy_to, "/var/apps/d8/#{fetch(:application)}"
 # path of application. tipically where execute commands.
-set :app_dir. "web"
+set :app_dir, "#{fetch(:current_path)}web"
+
+# Config export from locale to remote. Set to true if you need it.
+set :export_local_config, true
+# Set true if you want that Drushistrano export local config for you.
+# Drushistrano will connect to your localhost via ssh!
+set :export_local_config_via_ssh, true
+# Where exported config file will be saved.
+set :export_config_directory, "#{fetch(:current_path)}"
 
 set :use_sudo, false
-set :domains, ["production"]
-set :default_domain, "production"
+set :domains, ['production']
+set :default_domain, 'production'
 
 role :web, %w{stage.sparkfabrik.com}, user: fetch(:user), primary: true
 role :app, %w{stage.sparkfabrik.com}, user: fetch(:user), primary: true

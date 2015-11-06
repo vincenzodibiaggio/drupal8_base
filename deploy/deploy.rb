@@ -6,7 +6,7 @@ set :repo_url, 'gitlab@gitlab.sparkfabrik.com:vincenzo.dibiaggio/sparkadmin.git'
 set :branch, 'master'
 
 # Local path of application. Needed for some tasks
-set :loc_app_path, "/home/vincenzodb/Development/drupal8_base/"
+set :loc_app_path, "/home/vincenzodb/Development/drupal8_base/web"
 
 # Remote path where deploy the files.
 set :deploy_to, "/REMOTE_FILESYSTEM_DIRECTORY/#{fetch(:application)}/"
@@ -27,13 +27,16 @@ set :bin_console, "./../bin/console"
 
 set :user, "deploy"
 
-set :use_sudo, true
+set :use_sudo, false
+
+# Config export from locale to remote. Set to true if you need it.
+set :export_local_config, true
+# Set true if you want that Drushistrano export local config for you.
+# Drushistrano will connect to your localhost via ssh!
+set :export_local_config_via_ssh, true
 
 # Default branch is :master
 # ask :branch, `git rev-parse --abbrev-ref HEAD`.chomp
-
-# Default deploy_to directory is /var/www/my_app_name
-# set :deploy_to, '/var/www/my_app_name'
 
 # Default value for :scm is :git
 set :scm, :git

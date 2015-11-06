@@ -70,9 +70,12 @@ set :application, 'sparkadmin'
 # at filepaths
 
 set :deploy_to, "/var/apps/d8/#{fetch(:application)}"
+# path of application. tipically where execute commands.
+set :app_dir. "web"
 
 set :use_sudo, false
 set :domains, ["production"]
 set :default_domain, "production"
 
 role :web, %w{stage.sparkfabrik.com}, user: fetch(:user), primary: true
+role :app, %w{stage.sparkfabrik.com}, user: fetch(:user), primary: true

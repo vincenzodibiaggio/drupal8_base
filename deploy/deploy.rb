@@ -2,14 +2,28 @@
 lock '3.4.0'
 
 set :application, 'drupal8_base'
-set :repo_url, 'git@github.com:vincenzodibiaggio/drupal8_base.git'
+set :repo_url, 'gitlab@gitlab.sparkfabrik.com:vincenzo.dibiaggio/sparkadmin.git'
 set :branch, 'master'
 
-# Drush configuration (could be overrided on stages.rb)
-set :local_drush, "./bin/drush"
+# Local path of application. Needed for some tasks
+set :loc_app_path, "/home/vincenzodb/Development/drupal8_base/"
 
-# Drush remote path
-set :remote_drush, "./bin/drush"
+# Remote path where deploy the files.
+set :deploy_to, "/REMOTE_FILESYSTEM_DIRECTORY/#{fetch(:application)}/"
+
+# Current release path.
+set :current_path, "#{fetch(:deploy_to)}current/"
+
+# Path of application. Tipically where execute commands that need an highter bootstrap level.
+set :app_dir, "#{fetch(:current_path)}web"
+
+# Relative path where export configuration files.
+# The root of the current release because commands need the application path.
+set :export_config_directory, "../"
+
+# Drush configuration (could be overrided on stages.rb)
+set :bin_drush, "./../bin/drush"
+set :bin_console, "./../bin/console"
 
 set :user, "deploy"
 
@@ -56,5 +70,4 @@ namespace :deploy do
       # end
     end
   end
-
 end

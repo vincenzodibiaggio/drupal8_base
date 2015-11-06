@@ -60,24 +60,22 @@
 #     # password: 'please use keys'
 #   }
 
-set :stage , :stage
-set :branch, "develop"
 set :user, "vincenzodb"
+
+set :stage , :loc
+set :branch, "develop"
 
 # used in case we're deploying multiple versions of the same
 # app side by side. Also provides quick sanity checks when looking
 # at filepaths
-set :deploy_to, "/home/vincenzodb/www-docs/#{fetch(:application)}/"
 
-# Current release path.
-set :current_path, "#{fetch(:deploy_to)}current/"
-
-# Path of application. Tipically where execute commands that need an highter bootstrap level.
-set :app_dir, "#{fetch(:current_path)}web"
+set :deploy_to, "/home/vincenzodb/Development/#{fetch(:application)}"
+# path of application. tipically where execute commands.
+set :app_dir, "#{fetch(:deploy_to)}/web"
 
 set :use_sudo, false
-set :domains, ["stage"]
-set :default_domain, "stage"
+set :domains, ["loc"]
+set :default_domain, "loc"
 
-role :web, %w{51.254.142.89}, user: fetch(:user), primary: true
-role :app, %w{51.254.142.89}, user: fetch(:user), primary: true
+role :web, %w{localhost}, user: fetch(:user), primary: true
+role :app, %w{localhost}, user: fetch(:user), primary: true

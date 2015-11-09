@@ -27,8 +27,6 @@ require 'capistrano/deploy'
 # require 'capistrano/rails/migrations'
 # require 'capistrano/passenger'
 
-# Load custom tasks from `lib/capistrano/tasks` if you have any defined
-Dir.glob('lib/capistrano/tasks/*.rake').each { |r| import r }
-
-Dir.glob('lib/capistrano/**/*.rb').each { |r| import r }
-
+# Loads custom tasks from `lib/capistrano/tasks' if you have any defined.
+Dir.glob('deploy/lib/capistrano/tasks/*.rb').each { |r| import r }
+Dir.glob('deploy/lib/capistrano/**/*.rb').each { |r| import r }

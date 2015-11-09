@@ -2,36 +2,88 @@
 
 <project name="Drupal 8 Base" default="dummy">
 
-  <target name="drupal-installation" if="env">
-    <exec command="yes | ./../bin/drush site-install --db-url='${db.type}://${db.user.name}:${db.user.pass}@${db.host}:${db.port}/${db.name}' --site-name='${site.name}' --site-mail='${site.mail}' --account-name='${site.account.name}' --account-mail='${site.account.mail}' --account-pass='${site.account.pass}' standard" dir="web" passthru="true" />
+  <target name="import-drupal-config" if="env">
+    <chmod file="config.tar.gz" mode="777" verbose="true" />
+    <exec command="./../bin/console config:import --file ../config.tar.gz" dir="web" passthru="true" />
+  </target>
+
+  <target name="composer-update" if="env">
+    <exec command="composer update" passthru="true" />
+  </target>
+
+  <target name="composer-install" if="env">
+    <exec command="composer install" passthru="true" />
   </target>
 
   <target name="generate-settings" if="env">
+
+    <exec command="if [ -d 'web/sites/${settings.directory.source}' ]; then echo 'true'; else echo 'false'; fi;" outputProperty="output.IS_DIRECTORY_EXISTS" />
+    <if>
+        <equals arg1="${output.IS_DIRECTORY_EXISTS}" arg2="true" />
+        <then>
+            <echo>"web/sites/${settings.directory.source} exist"</echo>
+        </then>
+        <else>
+           <mkdir dir="web/sites/${settings.directory.source}" />
+        </else>
+    </if>
+
+    <exec command="if [ -d 'web/sites/${settings.directory.destination}' ]; then echo 'true'; else echo 'false'; fi;" outputProperty="output.IS_DIRECTORY_EXISTS" />
+    <if>
+        <equals arg1="${output.IS_DIRECTORY_EXISTS}" arg2="true" />
+        <then>
+            <echo>"web/sites/${settings.directory.destination} exist"</echo>
+        </then>
+        <else>
+           <mkdir dir="web/sites/${settings.directory.destination}" />
+        </else>
+    </if>
+
     <chmod file="web/sites/${settings.directory.source}" mode="755" verbose="true" />
     <chmod file="web/sites/${settings.directory.destination}" mode="755" verbose="true" />
-    <mkdir dir="web/sites/${settings.directory.source}" />
-    <mkdir dir="web/sites/${settings.directory.destination}" />
-    <copy file="base_files/default.settings.php.dist" tofile="web/sites/${settings.directory.source}/settings.php" overwrite="true">
+
+    <loadfile property="settings.default" file="web/sites/${settings.directory.source}/default.settings.php"/>
+    <loadfile property="settings.base" file="base_files/default.settings.php.dist"/>
+    <echo msg="${settings.default}${line.separator}${settings.base}" file="web/sites/${settings.directory.destination}/settings.php" append="true" />
+
+    <loadfile property="services.default" file="web/sites/${settings.directory.source}/default.services.yml"/>
+    <loadfile property="services.base" file="base_files/default.services.yml.dist"/>
+    <echo msg="${services.default}${line.separator}${services.base}" file="web/sites/${settings.directory.destination}/services.yml" append="true" />
+  </target>
+
+  <target name="generate-ci-settings" if="env">
+    <loadfile property="settings.${env}" file="base_files/${env}.settings.php.dist"/>
+    <echo msg="${settings.${env}}" file="web/sites/${settings.directory.destination}/settings.php" append="true" />
+    <copy file="web/sites/${settings.directory.destination}/settings.php" tofile="web/sites/${settings.directory.destination}/settings.php.temp" />
+    <exec command="rm web/sites/${settings.directory.destination}/settings.php" />
+    <copy file="web/sites/${settings.directory.destination}/settings.php.temp" tofile="web/sites/${settings.directory.destination}/settings.php">
       <filterchain>
         <replacetokens begintoken="%%" endtoken="%%">
           <token key="SETTINGS_INSTALL_PROFILE" value="${site.profile}" />
+          <token key="DB_NAME" value="${db.name}" />
+          <token key="DB_USER_NAME" value="${db.user.name}" />
+          <token key="DB_USER_PASS" value="${db.user.pass}" />
+          <token key="DB_HOST" value="${db.host}" />
+          <token key="DB_PORT" value="${db.port}" />
         </replacetokens>
       </filterchain>
     </copy>
 
-    <copy file="base_files/default.services.yml.dist" tofile="web/sites/${settings.directory.source}/services.yml" overwrite="true" />
+    <exec command="rm web/sites/${settings.directory.destination}/settings.php.temp" passthru="true"/>
+  </target>
 
-    <if>
-      <available file='web/sites/${settings.directory.destination}' type='dir' />
-      <then>
-        <echo>Set chmod for default/ folder</echo>
-        <chmod file="web/sites/${settings.directory.destination}" mode="755" verbose="true" failonerror="false"/>
-      </then>
-    </if>
+  <target name="remove-configs" if="env">
+   <exec command="rm -r config/active" passthru="true"/>
+   <exec command="rm -r config/staging" passthru="true"/>
+   <exec command="rm -r config/sync" passthru="true"/>
+  </target>
+
+  <target name="drop-db" if="env">
+   <exec command="./../bin/drush sql-drop -y" dir="web" passthru="true" />
   </target>
 
   <target name="generate-sites" if="env">
-    <echo>Delete settings.php and sites.php files </echo>
+    <echo>Delete sites.php files </echo>
     <delete file="web/sites/sites.php" failonerror="false" />
     <copy file="web/sites/example.sites.php" tofile="web/sites/sites.php" overwrite="true">
       <filterchain>
@@ -43,8 +95,14 @@
     </copy>
   </target>
 
+  <target name="drupal-installation" if="env">
+    <echo>"./../bin/drush site-install --db-url='${db.type}://${db.user.name}:${db.user.pass}@${db.host}:${db.port}/${db.name}' --site-name='${site.name}' --site-mail='${site.mail}' --account-name='${site.account.name}' --account-mail='${site.account.mail}' --account-pass='${site.account.pass}' standard -y"</echo>
+    <exec command="./../bin/drush site-install --db-url='${db.type}://${db.user.name}:${db.user.pass}@${db.host}:${db.port}/${db.name}' --site-name='${site.name}' --site-mail='${site.mail}' --account-name='${site.account.name}' --account-mail='${site.account.mail}' --account-pass='${site.account.pass}' standard -y" dir="web" passthru="true" />
+  </target>
+
   <target name="reset-dir-permissions" if="env">
     <chmod file="web/sites/${settings.directory.source}" mode="755" verbose="true" failonerror="false"/>
+    <exec command="chmod -R 777 web/sites/${settings.directory.destination}/files" passthru="true" />
     <chmod file="web/sites/${settings.directory.destination}" mode="755" verbose="true" failonerror="false"/>
   </target>
 
@@ -73,8 +131,48 @@
 
   <target name="build-app" if="env" depends="generate-properties">
     <property file="build.${env}.properties" />
+    <if>
+<<<<<<< HEAD
+        <and>
+          <equals arg1="${env}" arg2="loc" />
+          <equals arg1="${ci}" arg2="yes" />
+        </and>
+        <then>
+            <phingcall target="composer-update" />
+=======
+        <equals arg1="${env}" arg2="loc" />
+        <then>
+            <phingcall target="composer-install" />
+>>>>>>> 1a570a3907ba91d8172caa1012bd3dbf557d1450
+        </then>
+    </if>
     <phingcall target="generate-settings" />
     <phingcall target="generate-sites" />
+    <if>
+        <equals arg1="${env}" arg2="loc" />
+        <then>
+            <phingcall target="generate-ci-settings" />
+            <phingcall target="remove-configs" />
+            <phingcall target="drop-db" />
+        </then>
+    </if>
     <phingcall target="drupal-installation" />
+    <if>
+        <equals arg1="${env}" arg2="loc" />
+        <then>
+            <phingcall target="import-drupal-config" />
+        </then>
+    </if>
+    <phingcall target="reset-dir-permissions" />
+  </target>
+
+  <target name="ci-app" if="env" depends="generate-properties">
+    <property file="build.${env}.properties" />
+    <phingcall target="composer-update" />
+    <phingcall target="generate-settings" />
+    <phingcall target="generate-ci-settings" />
+    <phingcall target="generate-sites" />
+    <phingcall target="reset-dir-permissions" />
+    <phingcall target="import-drupal-config" />
   </target>
 </project>

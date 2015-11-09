@@ -37,6 +37,11 @@
       "scripts/drupal/update-scaffold.sh",
       "scripts/composer/post-install.sh",
       "scripts/base/post-install.sh"
+    ],
+    "post-update-cmd": [
+      "scripts/drupal/update-scaffold.sh",
+      "scripts/composer/post-install.sh",
+      "scripts/base/post-install.sh"
     ]
   },
   "config": {

@@ -1,0 +1,19 @@
+domain=sparkadmin.dibiaggio.it
+
+db.user.name=vinzdrp8
+db.user.pass=vinzdrp8
+db.host=127.0.0.1
+db.port=3306
+db.name=sparkadmin
+db.type=mysql
+db.prefix=d8
+site.name=My new Drupal 8
+site.langcode=English
+site.profile=standard
+site.mail=aniceweb@gmail.com
+site.account.name=admin
+site.account.pass=pippobaudo123
+site.account.mail=aniceweb@gmail.com
+
+settings.directory.source = default
+settings.directory.destination = default

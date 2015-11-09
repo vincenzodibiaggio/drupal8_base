@@ -715,6 +715,7 @@ $settings['bootstrap_config_storage'] = array(
 $config_directories = array(
   CONFIG_ACTIVE_DIRECTORY => './../config/active/',
   CONFIG_STAGING_DIRECTORY => './../config/staging/',
+  CONFIG_SYNC_DIRECTORY => './../config/sync/',
 );
 
 $settings['install_profile'] = '%%SETTINGS_INSTALL_PROFILE%%';

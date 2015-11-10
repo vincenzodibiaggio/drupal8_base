@@ -21,9 +21,11 @@ set :app_dir, "#{fetch(:current_path)}web"
 # The root of the current release because commands need the application path.
 set :export_config_directory, "../"
 
-# Drush configuration (could be overrided on stages.rb)
+# Executables
 set :bin_drush, "./../bin/drush"
 set :bin_console, "./../bin/console"
+set :bin_composer, "composer"
+set :bin_phing, "./bin/phing"
 
 set :user, "deploy"
 
@@ -34,6 +36,10 @@ set :export_local_config, true
 # Set true if you want that Drushistrano export local config for you.
 # Drushistrano will connect to your localhost via ssh!
 set :export_local_config_via_ssh, true
+
+# Linked (shared) files and diretories
+# set :linked_files, %w{web/sites/default/services.yml web/sites/default/settings.php}
+# set :linked_dirs, %w{bin config web/sites/default/files}
 
 # Default branch is :master
 # ask :branch, `git rev-parse --abbrev-ref HEAD`.chomp

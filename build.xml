@@ -32,6 +32,8 @@
 
   <target name="generate-sites" if="env">
     <echo>Delete settings.php and sites.php files </echo>
+    <delete file="web/sites/default/settings.php" failonerror="false" />
+    <delete file="web/sites/default/services.yml" failonerror="false" />
     <delete file="web/sites/sites.php" failonerror="false" />
     <copy file="web/sites/example.sites.php" tofile="web/sites/sites.php" overwrite="true">
       <filterchain>

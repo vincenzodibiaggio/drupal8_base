@@ -89,12 +89,42 @@ namespace :drushistrano do
     end
   end
 
+  namespace :build do
+    desc "Install app"
+    task :do do
+      on roles(:app) do
+        invoke 'drushistrano:composer:install'
+        invoke 'drushistrano:phing:build'
+        invoke 'drushistrano:files:copy_to_shared'
+      end
+    end
+    desc "CI app"
+    task :ci do
+      on roles(:app) do
+        invoke 'drushistrano:composer:update'
+        invoke 'drushistrano:phing:ci'
+      end
+    end
+  end
+
   namespace :install do
     desc "Install app"
     task :do do
       on roles(:app) do
         invoke 'drushistrano:composer:install'
         invoke 'drushistrano:phing:build'
+        invoke 'drushistrano:files:copy_to_shared'
+      end
+    end
+  end
+
+  namespace :files do
+    desc "Copy files to shared"
+    task :copy_to_shared do
+      on roles(:app) do
+        fetch(:linked_files).each do |file|
+          execute "cp #{fetch(:current_path)}#{file} #{shared_path}/#{file}"
+        end
       end
     end
   end

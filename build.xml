@@ -90,12 +90,10 @@
     <phingcall target="generate-settings" />
     <phingcall target="generate-sites" />
     <phingcall target="drupal-installation" />
-    <phingcall target="composer-install" />
   </target>
 
   <target name="ci-app" if="env" depends="generate-properties">
     <property file="build.${env}.properties" />
-    <phingcall target="composer-update" />
     <phingcall target="import-drupal-config" />
   </target>
 </project>

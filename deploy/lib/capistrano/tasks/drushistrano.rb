@@ -73,6 +73,7 @@ namespace :drushistrano do
     end
   end
 
+  # Namespace that involve Phing builds
   namespace :phing do
     desc "Build"
     task :build do
@@ -89,42 +90,66 @@ namespace :drushistrano do
     end
   end
 
+  # namespace :install do
+  #   desc "Install app"
+  #   task :do do
+  #     on roles(:app) do
+  #       :deploy
+
+  #       # invoke 'drushistrano:composer:install'
+  #       invoke 'drushistrano:phing:build'
+  #       invoke 'drushistrano:files:copy_to_shared'
+  #     end
+  #   end
+
+  #   desc "CI app"
+  #   task :ci do
+  #     on roles(:app) do
+  #       # invoke 'drushistrano:composer:update'
+  #       invoke 'drushistrano:phing:ci'
+  #     end
+  #   end
+  # end
+
+  namespace :files do
+
+    desc 'Touches linked files/dir (first deploy safe)'
+    task :touch do
+      on release_roles :all do
+        within shared_path do
+          fetch(:linked_files, []).each do |file|
+            info "Making sure dir exists: #{File.dirname(file)}"
+            execute :mkdir, '-p', File.dirname(file)
+            execute :touch, file
+            info "Touched: #{file}"
+          end
+        end
+      end
+    end
+
+    before 'deploy:check:make_linked_dirs', 'drushistrano:files:touch'
+    before 'deploy:check:linked_files', 'drushistrano:files:touch'
+  end
+
+  # Namespace that build the project and CI
   namespace :build do
     desc "Install app"
     task :do do
       on roles(:app) do
-        # invoke 'drushistrano:composer:install'
+        invoke 'deploy'
+
+        invoke 'drushistrano:composer:install'
         invoke 'drushistrano:phing:build'
-        invoke 'drushistrano:files:copy_to_shared'
       end
     end
+
     desc "CI app"
     task :ci do
       on roles(:app) do
-        # invoke 'drushistrano:composer:update'
+        invoke 'deploy'
+
+        invoke 'drushistrano:composer:update'
         invoke 'drushistrano:phing:ci'
-      end
-    end
-  end
-
-  namespace :install do
-    desc "Install app"
-    task :do do
-      on roles(:app) do
-        # invoke 'drushistrano:composer:install'
-        invoke 'drushistrano:phing:build'
-        invoke 'drushistrano:files:copy_to_shared'
-      end
-    end
-  end
-
-  namespace :files do
-    desc "Copy files to shared"
-    task :copy_to_shared do
-      on roles(:app) do
-        fetch(:linked_files).each do |file|
-          execute "cp #{fetch(:current_path)}#{file} #{shared_path}/#{file}"
-        end
       end
     end
   end

@@ -19,10 +19,10 @@
   </target>
 
   <target name="generate-settings" if="env">
-    <chmod file="web/sites/${settings.directory.source}" mode="755" verbose="true" />
-    <chmod file="web/sites/${settings.directory.destination}" mode="755" verbose="true" />
     <mkdir dir="web/sites/${settings.directory.source}" />
     <mkdir dir="web/sites/${settings.directory.destination}" />
+    <chmod file="web/sites/${settings.directory.source}" mode="755" verbose="true" />
+    <chmod file="web/sites/${settings.directory.destination}" mode="755" verbose="true" />
     <copy file="base_files/default.settings.php.dist" tofile="web/sites/${settings.directory.source}/settings.php" overwrite="true">
       <filterchain>
         <replacetokens begintoken="%%" endtoken="%%">

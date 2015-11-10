@@ -8,6 +8,7 @@ web/profiles/contrib
 bin
 
 # Ignore Drupal's file directory
+web/composer.lock
 web/sites/default/files
 web/sites/default/services.yml
 web/sites/default/settings.php

@@ -2,6 +2,18 @@
 
 <project name="Drupal 8 Base" default="dummy">
 
+  <target name="import-drupal-config" if="env">
+    <exec command="yes | ./../bin/console config:import" dir="web" passthru="true" />
+  </target>
+
+  <target name="composer-update" if="env">
+    <exec command="composer update" passthru="true" />
+  </target>
+
+  <target name="composer-install" if="env">
+    <exec command="composer install" passthru="true" />
+  </target>
+
   <target name="drupal-installation" if="env">
     <exec command="yes | ./../bin/drush site-install --db-url='${db.type}://${db.user.name}:${db.user.pass}@${db.host}:${db.port}/${db.name}' --site-name='${site.name}' --site-mail='${site.mail}' --account-name='${site.account.name}' --account-mail='${site.account.mail}' --account-pass='${site.account.pass}' standard" dir="web" passthru="true" />
   </target>
@@ -78,5 +90,12 @@
     <phingcall target="generate-settings" />
     <phingcall target="generate-sites" />
     <phingcall target="drupal-installation" />
+    <phingcall target="composer-install" />
+  </target>
+
+  <target name="ci-app" if="env" depends="generate-properties">
+    <property file="build.${env}.properties" />
+    <phingcall target="composer-update" />
+    <phingcall target="import-drupal-config" />
   </target>
 </project>

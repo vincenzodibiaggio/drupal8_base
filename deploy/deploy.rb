@@ -38,8 +38,8 @@ set :export_local_config, true
 set :export_local_config_via_ssh, true
 
 # Linked (shared) files and diretories
-# set :linked_files, %w{web/sites/default/services.yml web/sites/default/settings.php}
-# set :linked_dirs, %w{bin config web/sites/default/files}
+set :linked_files, %w{"build.#{fetch(:stage)}.properties" 'sites/all/default/settings.php' 'sites/all/default/services.yml'}
+set :linked_dirs, %w{bin config web/sites/default/files}
 
 # Default branch is :master
 # ask :branch, `git rev-parse --abbrev-ref HEAD`.chomp
@@ -56,12 +56,6 @@ set :log_level, :debug
 
 # Default value for :pty is false
 # set :pty, true
-
-# Default value for :linked_files is []
-# set :linked_files, fetch(:linked_files, []).push('config/database.yml', 'config/secrets.yml')
-
-# Default value for linked_dirs is []
-# set :linked_dirs, fetch(:linked_dirs, []).push('log', 'tmp/pids', 'tmp/cache', 'tmp/sockets', 'vendor/bundle', 'public/system')
 
 # Default value for default_env is {}
 # set :default_env, { path: "/opt/ruby/bin:$PATH" }

@@ -80,6 +80,13 @@ namespace :drushistrano do
         execute "cd #{fetch(:current_path)}; #{fetch(:bin_phing)} build-app -Denv=#{fetch(:stage)}"
       end
     end
+
+    desc "CI"
+    task :ci do
+      on roles(:app) do
+        execute "cd #{fetch(:current_path)}; #{fetch(:bin_phing)} ci-app -Denv=#{fetch(:stage)}"
+      end
+    end
   end
 
   namespace :install do

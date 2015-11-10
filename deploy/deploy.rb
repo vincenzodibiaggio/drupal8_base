@@ -39,7 +39,7 @@ set :export_local_config_via_ssh, true
 
 # Linked (shared) files and diretories
 set :linked_files, %w{web/sites/default/settings.php web/sites/default/services.yml}
-set :linked_dirs, %w{bin config web/sites/default/files}
+set :linked_dirs, %w{config web/sites/default/files}
 
 # Default branch is :master
 # ask :branch, `git rev-parse --abbrev-ref HEAD`.chomp

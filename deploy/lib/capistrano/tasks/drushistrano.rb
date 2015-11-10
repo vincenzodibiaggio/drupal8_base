@@ -93,7 +93,7 @@ namespace :drushistrano do
     desc "Install app"
     task :do do
       on roles(:app) do
-        invoke 'drushistrano:composer:install'
+        # invoke 'drushistrano:composer:install'
         invoke 'drushistrano:phing:build'
         invoke 'drushistrano:files:copy_to_shared'
       end
@@ -101,7 +101,7 @@ namespace :drushistrano do
     desc "CI app"
     task :ci do
       on roles(:app) do
-        invoke 'drushistrano:composer:update'
+        # invoke 'drushistrano:composer:update'
         invoke 'drushistrano:phing:ci'
       end
     end
@@ -111,7 +111,7 @@ namespace :drushistrano do
     desc "Install app"
     task :do do
       on roles(:app) do
-        invoke 'drushistrano:composer:install'
+        # invoke 'drushistrano:composer:install'
         invoke 'drushistrano:phing:build'
         invoke 'drushistrano:files:copy_to_shared'
       end

@@ -83,6 +83,8 @@ set :export_local_config_via_ssh, true
 # Where exported config file will be saved.
 set :export_config_directory, "#{fetch(:current_path)}"
 
+set :linked_files, fetch(:linked_files, []).push('build.stage.properties')
+
 set :use_sudo, false
 set :domains, ['stage']
 set :default_domain, 'stage'

@@ -38,7 +38,7 @@ set :export_local_config, true
 set :export_local_config_via_ssh, true
 
 # Linked (shared) files and diretories
-set :linked_files, %w{"build.#{fetch(:stage)}.properties" 'sites/all/default/settings.php' 'sites/all/default/services.yml'}
+set :linked_files, %w{sites/all/default/settings.php sites/all/default/services.yml}
 set :linked_dirs, %w{bin config web/sites/default/files}
 
 # Default branch is :master

@@ -40,6 +40,7 @@ build.loc.properties
 !web/autoload.php
 
 # Drushistrano
+deploy/deploy.rb
 deploy/stages/production.rb
 deploy/stages/stage.rb
 deploy/stages/loc.rb

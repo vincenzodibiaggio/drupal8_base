@@ -1,15 +1,15 @@
 # config valid only for current version of Capistrano
 lock '3.4.0'
 
-set :application, 'drupal8_base'
-set :repo_url, 'gitlab@gitlab.sparkfabrik.com:vincenzo.dibiaggio/sparkadmin.git'
+set :application, 'sparkadmin'
+set :repo_url, 'REPO_URL'
 set :branch, 'master'
 
 # Local path of application. Needed for some tasks
-set :loc_app_path, "/home/vincenzodb/Development/drupal8_base/web"
+set :loc_app_path, "YOUR_LOCAL_PROJECT_PATH/web"
 
 # Remote path where deploy the files.
-set :deploy_to, "/REMOTE_FILESYSTEM_DIRECTORY/#{fetch(:application)}/"
+set :deploy_to, "YOUR_REMOTE_PROJECT_PATH/#{fetch(:application)}/"
 
 # Current release path.
 set :current_path, "#{fetch(:deploy_to)}current/"

@@ -3,7 +3,7 @@
 <project name="Drupal 8 Base" default="dummy">
 
   <target name="import-drupal-config" if="env">
-    <exec command="yes | ./../bin/console config:import" dir="web" passthru="true" />
+    <exec command="./../bin/console config:import -y" dir="web" passthru="true" />
   </target>
 
   <target name="composer-update" if="env">
@@ -12,10 +12,6 @@
 
   <target name="composer-install" if="env">
     <exec command="composer install" passthru="true" />
-  </target>
-
-  <target name="drupal-installation" if="env">
-    <exec command="yes | ./../bin/drush site-install --db-url='${db.type}://${db.user.name}:${db.user.pass}@${db.host}:${db.port}/${db.name}' --site-name='${site.name}' --site-mail='${site.mail}' --account-name='${site.account.name}' --account-mail='${site.account.mail}' --account-pass='${site.account.pass}' standard" dir="web" passthru="true" />
   </target>
 
   <target name="generate-settings" if="env">
@@ -32,20 +28,10 @@
     </copy>
 
     <copy file="base_files/default.services.yml.dist" tofile="web/sites/${settings.directory.source}/services.yml" overwrite="true" />
-
-    <if>
-      <available file='web/sites/${settings.directory.destination}' type='dir' />
-      <then>
-        <echo>Set chmod for default/ folder</echo>
-        <chmod file="web/sites/${settings.directory.destination}" mode="755" verbose="true" failonerror="false"/>
-      </then>
-    </if>
   </target>
 
   <target name="generate-sites" if="env">
     <echo>Delete settings.php and sites.php files </echo>
-    <delete file="web/sites/default/settings.php" failonerror="false" />
-    <delete file="web/sites/default/services.yml" failonerror="false" />
     <delete file="web/sites/sites.php" failonerror="false" />
     <copy file="web/sites/example.sites.php" tofile="web/sites/sites.php" overwrite="true">
       <filterchain>
@@ -55,6 +41,10 @@
         </replacetokens>
       </filterchain>
     </copy>
+  </target>
+
+  <target name="drupal-installation" if="env">
+    <exec command="./../bin/drush site-install --db-url='${db.type}://${db.user.name}:${db.user.pass}@${db.host}:${db.port}/${db.name}' --site-name='${site.name}' --site-mail='${site.mail}' --account-name='${site.account.name}' --account-mail='${site.account.mail}' --account-pass='${site.account.pass}' standard -y" dir="web" passthru="true" />
   </target>
 
   <target name="reset-dir-permissions" if="env">
@@ -89,6 +79,7 @@
     <property file="build.${env}.properties" />
     <phingcall target="generate-settings" />
     <phingcall target="generate-sites" />
+    <phingcall target="reset-dir-permissions" />
     <phingcall target="drupal-installation" />
   </target>
 

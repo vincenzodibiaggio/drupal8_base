@@ -114,7 +114,9 @@ namespace :drushistrano do
     desc 'Prepare files/dir (first deploy safe)'
     task :prepare do
       on release_roles :all do
-        execute :cp, "#{fetch(:current_path)}build.#{fetch(:stage)}.properties.dist", "#{fetch(:current_path)}build.#{fetch(:stage)}.properties"
+        within current_path do
+          execute :cp, "#{fetch(:current_path)}build.#{fetch(:stage)}.properties.dist", "#{fetch(:current_path)}build.#{fetch(:stage)}.properties"
+        end
       end
     end
 

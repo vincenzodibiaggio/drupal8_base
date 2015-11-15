@@ -64,6 +64,8 @@ set :stage , :stage
 set :branch, 'develop'
 set :user, 'YOUR_STAGE_USER'
 
+set :application, 'sparkadmin'
+
 # used in case we're deploying multiple versions of the same
 # app side by side. Also provides quick sanity checks when looking
 # at filepaths
@@ -73,7 +75,7 @@ set :deploy_to, "YOUR_STAGE_APP_PATH/#{fetch(:application)}/"
 set :current_path, "#{fetch(:deploy_to)}current/"
 
 # Path of application. Tipically where execute commands that need an highter bootstrap level.
-set :app_dir, "#{fetch(:current_path)}web"
+set :app_dir, "#{fetch(:current_path)}web/"
 
 # Config export from locale to remote. Set to true if you need it.
 set :export_local_config, true

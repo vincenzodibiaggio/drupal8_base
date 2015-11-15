@@ -15,7 +15,7 @@ set :deploy_to, "YOUR_REMOTE_PROJECT_PATH/#{fetch(:application)}/"
 set :current_path, "#{fetch(:deploy_to)}current/"
 
 # Path of application. Tipically where execute commands that need an highter bootstrap level.
-set :app_dir, "#{fetch(:current_path)}web"
+set :app_dir, "#{fetch(:current_path)}web/"
 
 # Relative path where export configuration files.
 # The root of the current release because commands need the application path.
@@ -38,7 +38,6 @@ set :export_local_config, true
 set :export_local_config_via_ssh, true
 
 # Linked (shared) files and diretories
-set :linked_files, %w{web/sites/default/settings.php web/sites/default/services.yml}
 set :linked_dirs, %w{config web/sites/default/files}
 
 # Default branch is :master

@@ -32,6 +32,8 @@ web/.htaccess
 
 # Build
 build.loc.properties
+build.stage.properties
+build.production.properties
 !web/autoload.php
 
 # Drushistrano

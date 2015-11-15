@@ -1,0 +1,19 @@
+domain=sparkadmin.dibiaggio.it
+
+db.user.name=root
+db.user.pass=enculet
+db.host=localhost
+db.port=3306
+db.name=drupal8_sparkadmin
+db.type=mysql
+db.prefix=d8
+site.name=SparkAdmin
+site.langcode=English
+site.profile=standard
+site.mail=aniceweb@gmail.com
+site.account.name=admin
+site.account.pass=pippobaudo123
+site.account.mail=aniceweb@gmail.com
+
+settings.directory.source = default
+settings.directory.destination = default

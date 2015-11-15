@@ -132,18 +132,12 @@
   <target name="build-app" if="env" depends="generate-properties">
     <property file="build.${env}.properties" />
     <if>
-<<<<<<< HEAD
         <and>
           <equals arg1="${env}" arg2="loc" />
           <equals arg1="${ci}" arg2="yes" />
         </and>
         <then>
             <phingcall target="composer-update" />
-=======
-        <equals arg1="${env}" arg2="loc" />
-        <then>
-            <phingcall target="composer-install" />
->>>>>>> 1a570a3907ba91d8172caa1012bd3dbf557d1450
         </then>
     </if>
     <phingcall target="generate-settings" />

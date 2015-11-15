@@ -71,7 +71,7 @@ set :application, 'sparkadmin'
 
 set :deploy_to, "/var/apps/d8/#{fetch(:application)}"
 # path of application. tipically where execute commands.
-set :app_dir, "#{fetch(:current_path)}web"
+set :app_dir, "#{fetch(:current_path)}web/"
 
 # Config export from locale to remote. Set to true if you need it.
 set :export_local_config, true

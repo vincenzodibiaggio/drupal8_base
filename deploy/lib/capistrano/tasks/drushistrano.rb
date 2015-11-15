@@ -90,27 +90,6 @@ namespace :drushistrano do
     end
   end
 
-  # namespace :install do
-  #   desc "Install app"
-  #   task :do do
-  #     on roles(:app) do
-  #       :deploy
-
-  #       # invoke 'drushistrano:composer:install'
-  #       invoke 'drushistrano:phing:build'
-  #       invoke 'drushistrano:files:copy_to_shared'
-  #     end
-  #   end
-
-  #   desc "CI app"
-  #   task :ci do
-  #     on roles(:app) do
-  #       # invoke 'drushistrano:composer:update'
-  #       invoke 'drushistrano:phing:ci'
-  #     end
-  #   end
-  # end
-
   namespace :files do
 
     desc 'Touches linked files/dir (first deploy safe)'
@@ -119,16 +98,29 @@ namespace :drushistrano do
         within shared_path do
           fetch(:linked_files, []).each do |file|
             info "Making sure dir exists: #{File.dirname(file)}"
-            execute :mkdir, '-p', File.dirname(file)
-            execute :touch, file
+            execute :mkdir, '-p', "#{shared_path}/" + File.dirname(file)
+            execute :touch, "#{shared_path}/" + file
             info "Touched: #{file}"
+          end
+          fetch(:linked_dirs, []).each do |dir|
+            info "Making sure dir exists: #{dir}"
+            execute :mkdir, '-p', "#{shared_path}/" + dir
+            info "Created: #{dir}"
           end
         end
       end
     end
 
+    desc 'Prepare files/dir (first deploy safe)'
+    task :prepare do
+      on release_roles :all do
+        execute :cp, "#{fetch(:current_path)}build.#{fetch(:stage)}.properties.dist", "#{fetch(:current_path)}build.#{fetch(:stage)}.properties"
+      end
+    end
+
     before 'deploy:check:make_linked_dirs', 'drushistrano:files:touch'
     before 'deploy:check:linked_files', 'drushistrano:files:touch'
+    after 'deploy:symlink:release', 'drushistrano:files:prepare'
   end
 
   # Namespace that build the project and CI
@@ -140,6 +132,7 @@ namespace :drushistrano do
 
         invoke 'drushistrano:composer:install'
         invoke 'drushistrano:phing:build'
+        # invoke 'drushistrano:files:symlinks'
       end
     end
 

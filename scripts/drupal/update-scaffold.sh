@@ -13,6 +13,7 @@ rsync -avz --delete /tmp/drupal-8/ $ROOT/web \
  --exclude=example.gitignore \
  --exclude=LICENSE.txt \
  --exclude=README.txt \
- --exclude=vendor
+ --exclude=vendor \
+ --exclude=default/files
 
 rm -rf /tmp/drupal-8

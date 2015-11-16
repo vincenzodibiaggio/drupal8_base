@@ -41,6 +41,10 @@
 
     <chmod file="web/sites/${settings.directory.source}" mode="755" verbose="true" />
     <chmod file="web/sites/${settings.directory.destination}" mode="755" verbose="true" />
+    <chmod file="web/sites/${settings.directory.destination}/settings.php" mode="755" verbose="true" />
+    <chmod file="web/sites/${settings.directory.destination}/services.yml" mode="755" verbose="true" />
+    <delete file="web/sites/${settings.directory.destination}/settings.php" failonerror="false" />
+    <delete file="web/sites/${settings.directory.destination}/services.yml" failonerror="false" />
 
     <loadfile property="settings.default" file="web/sites/${settings.directory.source}/default.settings.php"/>
     <loadfile property="settings.base" file="base_files/default.settings.php.dist"/>

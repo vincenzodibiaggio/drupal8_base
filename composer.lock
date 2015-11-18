@@ -666,12 +666,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/hechoendrupal/DrupalConsole.git",
-                "reference": "9ac228621a84e0ddba4d95fa6f4e783eb3c052ac"
+                "reference": "ed60ee4dad9801da6cfe69f7ec1963c53585b43d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/hechoendrupal/DrupalConsole/zipball/9ac228621a84e0ddba4d95fa6f4e783eb3c052ac",
-                "reference": "9ac228621a84e0ddba4d95fa6f4e783eb3c052ac",
+                "url": "https://api.github.com/repos/hechoendrupal/DrupalConsole/zipball/ed60ee4dad9801da6cfe69f7ec1963c53585b43d",
+                "reference": "ed60ee4dad9801da6cfe69f7ec1963c53585b43d",
                 "shasum": ""
             },
             "require": {
@@ -742,7 +742,7 @@
                 "drupal",
                 "symfony"
             ],
-            "time": "2015-11-15 16:23:52"
+            "time": "2015-11-18 01:53:33"
         },
         {
             "name": "drupal/core",
@@ -915,12 +915,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/drush-ops/drush.git",
-                "reference": "6bb5ea5178b5165fdc7a16aecec1626d5ce4e823"
+                "reference": "a06cde953989474618f7bc15c8ca51910bf99600"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/drush-ops/drush/zipball/6bb5ea5178b5165fdc7a16aecec1626d5ce4e823",
-                "reference": "6bb5ea5178b5165fdc7a16aecec1626d5ce4e823",
+                "url": "https://api.github.com/repos/drush-ops/drush/zipball/a06cde953989474618f7bc15c8ca51910bf99600",
+                "reference": "a06cde953989474618f7bc15c8ca51910bf99600",
                 "shasum": ""
             },
             "require": {
@@ -996,7 +996,7 @@
             ],
             "description": "Drush is a command line shell and scripting interface for Drupal, a veritable Swiss Army knife designed to make life easier for those of us who spend some of our working hours hacking away at the command prompt.",
             "homepage": "http://www.drush.org",
-            "time": "2015-11-13 19:07:05"
+            "time": "2015-11-18 15:20:35"
         },
         {
             "name": "easyrdf/easyrdf",

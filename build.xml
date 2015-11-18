@@ -25,6 +25,7 @@
         </then>
         <else>
            <mkdir dir="web/sites/${settings.directory.source}" />
+           <chmod file="web/sites/${settings.directory.source}" mode="755" verbose="true" />
         </else>
     </if>
 
@@ -36,15 +37,35 @@
         </then>
         <else>
            <mkdir dir="web/sites/${settings.directory.destination}" />
+           <chmod file="web/sites/${settings.directory.destination}" mode="755" verbose="true" />
         </else>
     </if>
 
-    <chmod file="web/sites/${settings.directory.source}" mode="755" verbose="true" />
-    <chmod file="web/sites/${settings.directory.destination}" mode="755" verbose="true" />
-    <chmod file="web/sites/${settings.directory.destination}/settings.php" mode="755" verbose="true" />
-    <chmod file="web/sites/${settings.directory.destination}/services.yml" mode="755" verbose="true" />
-    <delete file="web/sites/${settings.directory.destination}/settings.php" failonerror="false" />
-    <delete file="web/sites/${settings.directory.destination}/services.yml" failonerror="false" />
+    <exec command="if [ -f 'web/sites/${settings.directory.destination}/settings.php' ]; then echo 'true'; else echo 'false'; fi;" outputProperty="output.IS_DIRECTORY_EXISTS" />
+    <if>
+        <equals arg1="${output.IS_DIRECTORY_EXISTS}" arg2="true" />
+        <then>
+            <echo>"web/sites/${settings.directory.destination}/settings.php exist"</echo>
+            <chmod file="web/sites/${settings.directory.destination}/settings.php" mode="755" verbose="true" />
+            <delete file="web/sites/${settings.directory.destination}/settings.php" failonerror="false" />
+        </then>
+        <else>
+           <mkdir dir="web/sites/${settings.directory.destination}" />
+        </else>
+    </if>
+
+    <exec command="if [ -f 'web/sites/${settings.directory.destination}/services.yml' ]; then echo 'true'; else echo 'false'; fi;" outputProperty="output.IS_DIRECTORY_EXISTS" />
+    <if>
+        <equals arg1="${output.IS_DIRECTORY_EXISTS}" arg2="true" />
+        <then>
+            <echo>"web/sites/${settings.directory.destination}/services.yml exist"</echo>
+            <chmod file="web/sites/${settings.directory.destination}/services.yml" mode="755" verbose="true" />
+            <delete file="web/sites/${settings.directory.destination}/services.yml" failonerror="false" />
+        </then>
+        <else>
+           <mkdir dir="web/sites/${settings.directory.destination}" />
+        </else>
+    </if>
 
     <loadfile property="settings.default" file="web/sites/${settings.directory.source}/default.settings.php"/>
     <loadfile property="settings.base" file="base_files/default.settings.php.dist"/>

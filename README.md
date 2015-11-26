@@ -18,7 +18,7 @@ to manage them differences.
 2. Composer - getcomposer.org
 
 ## Starting point (loc).
-1. Just clone this repo.
+1. Just clone this repo and launch `composer install`.
 2. Copy the `build.loc.properties.dist` file to `build.loc.properties` and replace default values with your env values.
 3. Launch the command `./bin/phing build-app -Denv=loc`.
 4. Init a git repo, then commit and push the code.

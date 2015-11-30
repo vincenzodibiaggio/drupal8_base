@@ -3,7 +3,7 @@
 <project name="Drupal 8 Base" default="dummy">
 
   <target name="drupal-installation" if="env">
-    <exec command="yes | ./../bin/drush site-install --db-url='${db.type}://${db.user.name}:${db.user.pass}@${db.host}:${db.port}/${db.name}' --site-name='${site.name}' --site-mail='${site.mail}' --account-name='${site.account.name}' --account-mail='${site.account.mail}' --account-pass='${site.account.pass}' standard" dir="web" passthru="true" />
+    <exec command="bin/drush -y site-install --db-url='${db.type}://${db.user.name}:${db.user.pass}@${db.host}:${db.port}/${db.name}' --site-name='${site.name}' --site-mail='${site.mail}' --account-name='${site.account.name}' --account-mail='${site.account.mail}' --account-pass='${site.account.pass}' standard" dir="web" passthru="true" />
   </target>
 
   <target name="generate-settings" if="env">

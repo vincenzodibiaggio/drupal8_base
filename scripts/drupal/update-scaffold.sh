@@ -14,6 +14,7 @@ rsync -avz --delete /tmp/drupal-8/ $ROOT/web \
  --exclude=LICENSE.txt \
  --exclude=README.txt \
  --exclude=vendor \
- --exclude=default/files
+ --exclude=default/files \
+ --exclude=modules \
 
 rm -rf /tmp/drupal-8

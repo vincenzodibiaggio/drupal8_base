@@ -35,7 +35,7 @@
   "scripts": {
     "post-install-cmd": [
       "scripts/base/setup.sh",
-      "scripts/drupal/update-scaffold.sh",
+      "scripts/drupal/install-scaffold.sh",
       "scripts/composer/post-install.sh",
       "scripts/base/post-install.sh"
     ],

@@ -22,8 +22,8 @@ class RoboFile extends \Robo\Tasks
     // Download Drupal.
     $this->_exec('bin/drupal site:new drupalcore ' . $this->projectProperties['properties']['drupal.version']);
     $this->taskRsync()
-      ->fromPath('drupalcore')
-      ->toPath(__DIR__)
+      ->fromPath('drupalcore/')
+      ->toPath(__DIR__ . '/web/')
       ->archive()
       ->verbose()
       ->compress()

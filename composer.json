@@ -16,7 +16,6 @@
     }
   ],
   "require": {
-    "composer/installers": "^1.0.20",
     "drupal/core": "8.0.*",
     "drush/drush": "dev-master",
     "drupal/console": "dev-master",
@@ -28,7 +27,6 @@
     "mikey179/vfsStream": "~1.2",
     "phpunit/phpunit": "~4.8",
     "symfony/css-selector": "2.7.*",
-    "phing/phing": "3.*",
     "codegyre/robo": "*"
   },
   "minimum-stability": "dev",

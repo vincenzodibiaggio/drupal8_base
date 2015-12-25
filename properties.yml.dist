@@ -1,0 +1,17 @@
+drupal.version: 8.0.1
+domain: DOMAIN
+env: ENVIRONMENT
+db.user.name: USER
+db.user.pass: PASS
+db.host: HOST
+db.port: PORT
+db.name: DB_NAME
+db.type: DB_TYPE
+db.prefix: DB_PREFIX
+site.name: SITE_NAME
+site.langcode: en
+site.profile: standard
+site.mail: SITE_MAIL
+site.account.name: USER
+site.account.pass: PASS
+site.account.mail: USER_MAIL

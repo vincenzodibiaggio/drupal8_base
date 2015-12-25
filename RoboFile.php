@@ -40,16 +40,19 @@ class RoboFile extends \Robo\Tasks
       ->exclude('LICENSE.txt')
       ->exclude('vendor')
       ->exclude('modules')
+      ->exclude('sites/default/')
       ->run();
     $this->_exec('rm -rf drupalcore');
 
     // Config directory.
+    $this->_exec('rm -r ' .  __DIR__ . '/config');
     $this->_exec('mkdir ' .  __DIR__ . '/config');
     $this->_exec('mkdir ' .  __DIR__ . '/config/active');
     $this->_exec('mkdir ' .  __DIR__ . '/config/staging');
     $this->_exec('mkdir ' .  __DIR__ . '/config/sync');
     $this->_exec('mkdir -m 777 ' .  __DIR__ . '/web/sites/default/files');
 
+    // Config files.
     $this->_exec('chmod 755 ' .  __DIR__ . '/web/sites/default/');
     $this->_exec('chmod 755 ' .  __DIR__ . '/web/sites/default/services.yml');
     $this->_exec('chmod 755 ' .  __DIR__ . '/web/sites/default/settings.php');
@@ -89,16 +92,8 @@ class RoboFile extends \Robo\Tasks
 
     // Install Drupal.
     $this->_exec('bin/drupal site:install ' . $this->projectProperties['params'] . ' ' . $this->projectProperties['properties']['site.profile']);
-  }
 
-  // Common functions.
-  function composerInstall()
-  {
-    $this->taskComposerInstall()->run();
-  }
-
-  function composerUpdate()
-  {
+    // Update dependencies.
     $this->taskComposerUpdate()->run();
   }
 
@@ -132,6 +127,5 @@ class RoboFile extends \Robo\Tasks
       'properties' => $properties,
       'params' => $params_string,
     );
-
   }
 }

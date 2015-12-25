@@ -10,13 +10,14 @@ use Symfony\Component\Yaml\Yaml;
 
 class RoboFile extends \Robo\Tasks
 {
+
   private $projectProperties;
 
   function __construct() {
     $this->projectProperties = $this->getProjectProperties();
   }
 
-  // First build.
+  // Build.
   function build() {
 
     // Download Drupal.
@@ -91,15 +92,29 @@ class RoboFile extends \Robo\Tasks
     $this->_exec($dropString);
 
     // Install Drupal.
-    $this->_exec('bin/drupal site:install ' . $this->projectProperties['params'] . ' ' . $this->projectProperties['properties']['site.profile']);
+    $this->_exec('bin/drupal site:install ' . $this->projectProperties['params'] . ' ' . $this->projectProperties['properties']['site.profile'])->stopOnFail();
 
     // Update dependencies.
     $this->taskComposerUpdate()->run();
+
+    // Contrib modules.
+    $this->installContribModules();
+
+    // Languages.
+    $this->enableLanguages();
+
+    // Custom modules.
+    $this->installCustomModules();
+
+    $this->say('Build complete');
   }
 
   private function getProjectProperties() {
     // Parse the properties file.
     $properties = Yaml::parse(file_get_contents(__DIR__ . '/properties.yml'));
+
+    $properties['root'] = __DIR__ . '/' . $properties['root'];
+
     $arr_arguments = array(
       '--langcode='     => $properties['site.langcode'],
       '--db-type='      => $properties['db.type'],
@@ -115,7 +130,7 @@ class RoboFile extends \Robo\Tasks
       '--account-mail=' => $properties['site.account.mail'],
       '--account-pass=' => $properties['site.account.pass'],
       '--env='          => $properties['env'],
-      '--root='         => __DIR__ . '/web',
+      '--root='         => $properties['root'],
     );
 
     $params_string = '';
@@ -127,5 +142,26 @@ class RoboFile extends \Robo\Tasks
       'properties' => $properties,
       'params' => $params_string,
     );
+  }
+
+  // Enable languages.
+  private function enableLanguages() {
+    foreach ($this->projectProperties['properties']['languages'] as $language) {
+      $this->_exec('bin/drupal locale:language:add --root=' . $this->projectProperties['properties']['root'] . ' -e=' . $this->projectProperties['properties']['env'] . ' ' . $language)->stopOnFail();
+    }
+  }
+
+  // Install contrib modules.
+  private function installContribModules() {
+    foreach ($this->projectProperties['properties']['modules']['contrib'] as $module) {
+      $this->_exec('bin/drupal module:install --root=' . $this->projectProperties['properties']['root'] . ' -e=' . $this->projectProperties['properties']['env'] . ' ' . $module)->stopOnFail();
+    }
+  }
+
+  // Install custom modules.
+  private function installCustomModules() {
+    foreach ($this->projectProperties['properties']['modules']['custom'] as $module) {
+      $this->_exec('bin/drupal module:install --root=' . $this->projectProperties['properties']['root'] . ' -e=' . $this->projectProperties['properties']['env'] . ' --overwrite-config ' . $module)->stopOnFail();
+    }
   }
 }

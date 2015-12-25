@@ -1,6 +1,7 @@
 drupal.version: 8.0.1
 domain: DOMAIN
 env: ENVIRONMENT
+root: ROOT
 db.user.name: USER
 db.user.pass: PASS
 db.host: HOST
@@ -15,3 +16,14 @@ site.mail: SITE_MAIL
 site.account.name: USER
 site.account.pass: PASS
 site.account.mail: USER_MAIL
+
+languages:
+ - it
+
+modules:
+  contrib:
+    - module_a
+    - module_b
+
+  custom:
+    - module_a

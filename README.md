@@ -10,9 +10,6 @@ like `settings.php` and `services.php` that are under version control on officia
 After the `composer install` you will have all files updated at latest develop version of Drupal, a directory tree free
 from any repository (autoclean) and your next project ready to be installed.
 
-This repo assumes that we have 3 environments: loc (local development), stage, production and provides basic config files
-to manage them differences.
-
 ## Requirements
 1. mysql client (mysql CLI)
 2. Composer - http://getcomposer.org
@@ -20,5 +17,5 @@ to manage them differences.
 ## Starting point (loc).
 1. Just clone this repo and launch `composer install`
 2. Copy the `properties.yml.dist` file to `properties.yml` and replace default values with your env values.
-3. Launch the command `./bin/robo build`.
+3. Launch the command `bin/robo build`.
 4. Init a git repo, then commit and push the code.

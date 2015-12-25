@@ -16,17 +16,13 @@ class RoboFile extends \Robo\Tasks
     $this->projectProperties = $this->getProjectProperties();
   }
 
-
   // First build.
   function build() {
 
-    // Drop db.
-    $this->_exec('bin/drush sql-drop -y');
-
     // Download Drupal.
-    $this->_exec('bin/drupal site:new /tmp/drupal8 ' . $this->projectProperties['properties']['drupal.version']);
+    $this->_exec('bin/drupal site:new drupalcore ' . $this->projectProperties['properties']['drupal.version']);
     $this->taskRsync()
-      ->fromPath('/tmp/drupal8')
+      ->fromPath('drupalcore')
       ->toPath(__DIR__)
       ->archive()
       ->verbose()
@@ -45,34 +41,51 @@ class RoboFile extends \Robo\Tasks
       ->exclude('vendor')
       ->exclude('modules')
       ->run();
-    $this->_exec('rm -rf /tmp/drupal8');
+    $this->_exec('rm -rf drupalcore');
 
     // Config directory.
-    $this->_exec('mkdir config');
-    $this->_exec('mkdir config/active');
-    $this->_exec('mkdir config/staging');
-    $this->_exec('mkdir config/sync');
-    $this->_exec('mkdir -m 777 web/sites/default/files');
+    $this->_exec('mkdir ' .  __DIR__ . '/config');
+    $this->_exec('mkdir ' .  __DIR__ . '/config/active');
+    $this->_exec('mkdir ' .  __DIR__ . '/config/staging');
+    $this->_exec('mkdir ' .  __DIR__ . '/config/sync');
+    $this->_exec('mkdir -m 777 ' .  __DIR__ . '/web/sites/default/files');
+
+    $this->_exec('chmod 755 ' .  __DIR__ . '/web/sites/default/');
+    $this->_exec('chmod 755 ' .  __DIR__ . '/web/sites/default/services.yml');
+    $this->_exec('chmod 755 ' .  __DIR__ . '/web/sites/default/settings.php');
+    $this->_exec('rm ' .  __DIR__ . '/web/sites/default/services.yml');
+    $this->_exec('rm ' .  __DIR__ . '/web/sites/default/settings.php');
 
     // Append config settings to settings.php and services.yml to manage file configuration.
     $this->taskConcat([
-      __DIR__ . '/web/sites/default/default.services.yml.dist',
+      __DIR__ . '/web/sites/default/default.services.yml',
       __DIR__ . '/base_files/default.services.yml.dist',
     ])
-    ->to(__DIR__ . '/web/sites/default/services.yml')
-    ->run();
+      ->to(__DIR__ . '/web/sites/default/services.yml')
+      ->run();
 
     $this->taskConcat([
-      __DIR__ . '/web/sites/default/default.settings.php.dist',
+      __DIR__ . '/web/sites/default/default.settings.php',
       __DIR__ . '/base_files/default.settings.php.dist',
     ])
-    ->to(__DIR__ . '/web/sites/default/settings.php')
-    ->run();
+      ->to(__DIR__ . '/web/sites/default/settings.php')
+      ->run();
 
-
+    $this->taskReplaceInFile(__DIR__ . '/web/sites/default/settings.php')
+      ->from('%%SETTINGS_INSTALL_PROFILE%%')
+      ->to($this->projectProperties['properties']['site.profile'])
+      ->run();
 
     // Drop db.
-    $this->_exec('bin/drush sql-drop -y');
+    $dropString = 'mysqldump -u ' . $this->projectProperties['properties']['db.user.name'] . ' -p' . $this->projectProperties['properties']['db.user.pass'];
+    $dropString .= ' ' . $this->projectProperties['properties']['db.name'] . ' --no-data -h ' . $this->projectProperties['properties']['db.host'];
+    $dropString .= ' -P ' . $this->projectProperties['properties']['db.port'];
+    $dropString .=' | grep ^DROP | mysql -u ';
+    $dropString .=  $this->projectProperties['properties']['db.user.name'] . ' -p' . $this->projectProperties['properties']['db.user.pass'];
+    $dropString .= ' -h ' . $this->projectProperties['properties']['db.host'];
+    $dropString .= ' -P ' . $this->projectProperties['properties']['db.port'];
+    $dropString .= ' --one-database ' . $this->projectProperties['properties']['db.name'];
+    $this->_exec($dropString);
 
     // Install Drupal.
     $this->_exec('bin/drupal site:install ' . $this->projectProperties['params'] . ' ' . $this->projectProperties['properties']['site.profile']);

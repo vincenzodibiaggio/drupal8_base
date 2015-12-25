@@ -31,13 +31,5 @@ web/.htaccess
 .phpintel
 
 # Build
-build.loc.properties
-build.stage.properties
-build.production.properties
+properties.yml
 !web/autoload.php
-
-# Drushistrano
-deploy/deploy.rb
-deploy/stages/production.rb
-deploy/stages/stage.rb
-deploy/stages/loc.rb

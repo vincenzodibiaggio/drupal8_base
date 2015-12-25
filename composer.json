@@ -19,7 +19,8 @@
     "composer/installers": "^1.0.20",
     "drupal/core": "8.0.*",
     "drush/drush": "dev-master",
-    "drupal/console": "dev-master"
+    "drupal/console": "dev-master",
+    "drupal/config_update": "8.1.*@dev"
   },
   "require-dev": {
     "behat/mink": "~1.6",
@@ -27,23 +28,11 @@
     "mikey179/vfsStream": "~1.2",
     "phpunit/phpunit": "~4.8",
     "symfony/css-selector": "2.7.*",
-    "phing/phing": "3.*"
+    "phing/phing": "3.*",
+    "codegyre/robo": "*"
   },
   "minimum-stability": "dev",
   "prefer-stable": true,
-  "scripts": {
-    "post-install-cmd": [
-      "scripts/base/setup.sh",
-      "scripts/drupal/update-scaffold.sh",
-      "scripts/composer/post-install.sh",
-      "scripts/base/post-install.sh"
-    ],
-    "post-update-cmd": [
-      "scripts/drupal/update-scaffold.sh",
-      "scripts/composer/post-install.sh",
-      "scripts/base/post-install.sh"
-    ]
-  },
   "config": {
     "bin-dir": "bin/"
   },

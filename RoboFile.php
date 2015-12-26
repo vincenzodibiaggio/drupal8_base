@@ -41,7 +41,9 @@ class RoboFile extends \Robo\Tasks
       ->exclude('LICENSE.txt')
       ->exclude('vendor')
       ->exclude('modules')
-      ->exclude('sites/default/')
+      ->exclude('themes')
+      ->exclude('profiles')
+      ->exclude('sites/default/files')
       ->run();
     $this->_exec('rm -rf drupalcore');
 
@@ -100,11 +102,17 @@ class RoboFile extends \Robo\Tasks
     // Contrib modules.
     $this->installContribModules();
 
+    // Contrib themes.
+    $this->installContribThemes();
+
     // Languages.
     $this->enableLanguages();
 
     // Custom modules.
     $this->installCustomModules();
+
+    // Custom themes.
+    $this->installCustomThemes();
 
     $this->say('Build complete');
   }
@@ -146,22 +154,51 @@ class RoboFile extends \Robo\Tasks
 
   // Enable languages.
   private function enableLanguages() {
-    foreach ($this->projectProperties['properties']['languages'] as $language) {
-      $this->_exec('bin/drupal locale:language:add --root=' . $this->projectProperties['properties']['root'] . ' -e=' . $this->projectProperties['properties']['env'] . ' ' . $language)->stopOnFail();
+    if (isset($this->projectProperties['properties']['languages']) &&
+      count($this->projectProperties['properties']['languages']) !== 0) {
+      foreach ($this->projectProperties['properties']['languages'] as $language) {
+        $this->_exec('bin/drupal locale:language:add --root=' . $this->projectProperties['properties']['root'] . ' -e=' . $this->projectProperties['properties']['env'] . ' ' . $language)->stopOnFail();
+      }
     }
   }
 
   // Install contrib modules.
   private function installContribModules() {
-    foreach ($this->projectProperties['properties']['modules']['contrib'] as $module) {
-      $this->_exec('bin/drupal module:install --root=' . $this->projectProperties['properties']['root'] . ' -e=' . $this->projectProperties['properties']['env'] . ' ' . $module)->stopOnFail();
+    if (isset($this->projectProperties['properties']['modules']['contrib']) &&
+      count($this->projectProperties['properties']['modules']['contrib']) !== 0) {
+      foreach ($this->projectProperties['properties']['modules']['contrib'] as $module) {
+        $this->_exec('bin/drupal module:install --root=' . $this->projectProperties['properties']['root'] . ' -e=' . $this->projectProperties['properties']['env'] . ' ' . $module)->stopOnFail();
+      }
     }
   }
 
   // Install custom modules.
   private function installCustomModules() {
-    foreach ($this->projectProperties['properties']['modules']['custom'] as $module) {
-      $this->_exec('bin/drupal module:install --root=' . $this->projectProperties['properties']['root'] . ' -e=' . $this->projectProperties['properties']['env'] . ' --overwrite-config ' . $module)->stopOnFail();
+    if (isset($this->projectProperties['properties']['modules']['custom']) &&
+      count($this->projectProperties['properties']['modules']['custom']) !== 0) {
+      foreach ($this->projectProperties['properties']['modules']['custom'] as $module) {
+        $this->_exec('bin/drupal module:install --root=' . $this->projectProperties['properties']['root'] . ' -e=' . $this->projectProperties['properties']['env'] . ' --overwrite-config ' . $module)->stopOnFail();
+      }
+    }
+  }
+
+  // Install contrib themes.
+  private function installContribThemes() {
+    if (isset($this->projectProperties['properties']['themes']['contrib']) &&
+      count($this->projectProperties['properties']['themes']['contrib']) !== 0) {
+      foreach ($this->projectProperties['properties']['themes']['contrib'] as $theme) {
+        $this->_exec('bin/drupal theme:install --root=' . $this->projectProperties['properties']['root'] . ' -e=' . $this->projectProperties['properties']['env'] . ' ' . $theme)->stopOnFail();
+      }
+    }
+  }
+
+  // Install custom themes.
+  private function installCustomThemes() {
+    if (isset($this->projectProperties['properties']['themes']['custom']) &&
+      count($this->projectProperties['properties']['themes']['custom']) !== 0) {
+      foreach ($this->projectProperties['properties']['themes']['custom'] as $theme) {
+        $this->_exec('bin/drupal theme:install --root=' . $this->projectProperties['properties']['root'] . ' -e=' . $this->projectProperties['properties']['env'] . ' ' . $theme)->stopOnFail();
+      }
     }
   }
 }

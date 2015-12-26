@@ -18,12 +18,16 @@ site.account.pass: PASS
 site.account.mail: USER_MAIL
 
 languages:
- - it
+ - additional_language ('it' for Italian)
 
 modules:
   contrib:
-    - module_a
-    - module_b
+    - config_update
 
   custom:
     - module_a
+
+themes:
+  contrib:
+    - adminimal_theme
+    - bootstrap

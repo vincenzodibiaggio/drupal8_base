@@ -23,7 +23,9 @@ languages:
 modules:
   contrib:
     - config_update
-
+    - language
+    - locale
+    
   custom:
     - module_a
 

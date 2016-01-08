@@ -1,4 +1,4 @@
-drupal.version: 8.0.1
+drupal.version: 8.0.2
 domain: DOMAIN
 env: ENVIRONMENT
 root: ROOT
@@ -25,7 +25,7 @@ modules:
     - config_update
     - language
     - locale
-    
+
   custom:
     - module_a
 

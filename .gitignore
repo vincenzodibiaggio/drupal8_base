@@ -6,6 +6,7 @@ web/modules/contrib
 web/themes/contrib
 web/profiles/contrib
 bin
+composer.lock
 
 # Ignore Drupal's file directory
 web/composer.lock

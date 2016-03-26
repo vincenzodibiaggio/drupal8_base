@@ -1,7 +1,6 @@
-drupal.version: 8.0.2
-domain: DOMAIN
-env: ENVIRONMENT
-root: ROOT
+drupal.version: 8.0.5
+env: loc
+root: web
 db.user.name: USER
 db.user.pass: PASS
 db.host: HOST

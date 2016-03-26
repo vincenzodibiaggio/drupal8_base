@@ -24,7 +24,7 @@ class RoboFile extends \Robo\Tasks
     $this->_exec('bin/drupal site:new drupalcore ' . $this->projectProperties['properties']['drupal.version']);
     $this->taskRsync()
       ->fromPath('drupalcore/')
-      ->toPath($this->escapePath($this->projectProperties['properties']['root']))
+      ->toPath($this->projectProperties['properties']['root'])
       ->archive()
       ->verbose()
       ->compress()
@@ -211,9 +211,5 @@ class RoboFile extends \Robo\Tasks
   // See Symfony\Component\Console\Input.
   private function escapeArg($string) {
     return preg_match('{^[\w-]+$}', $string) ? $string : escapeshellarg($string);
-  }
-
-  private function escapePath($path) {
-    return '"' . $path . '"';
   }
 }

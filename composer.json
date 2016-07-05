@@ -17,9 +17,9 @@
   ],
   "require": {
     "drupal/core": "8.0.5",
-    "drush/drush": "dev-master",
+    "drush/drush": "^8.1.0",
     "alchemy/zippy": "0.3.5",
-    "drupal/console": "dev-master",
+    "drupal/console": "~0.11",
     "drupal/config_update": "8.1.*@dev",
     "drupal/bootstrap": "8.3.0-beta3",
     "drupal/adminimal_theme": "8.1.1"

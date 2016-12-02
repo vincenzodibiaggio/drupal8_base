@@ -20,9 +20,7 @@ class RoboFile extends \Robo\Tasks
   // Build.
   function build() {
 
-//    $this->_exec('docker-compose stop');
-//    $this->_exec('docker-compose rm -f');
-    $this->_exec('docker-compose up -d');
+    $this->_exec('docker-compose up -d --build');
 
     // Config directory.
     $this->_exec('rm -r ' . $this->escapeArg( __DIR__ . '/config'));
@@ -71,7 +69,7 @@ class RoboFile extends \Robo\Tasks
     $this->_exec($dropString);
 
     // Download Drupal.
-    $this->_exec('bin/drush site-install standard ' . $this->projectProperties['params'] . ' -y');
+    $this->_exec('bin/drush site-install ' . $this->projectProperties['params'] . ' -y');
 //    $this->taskRsync()
 //      ->fromPath('drupalcore/')
 //      ->toPath($this->projectProperties['properties']['root'])
@@ -108,13 +106,13 @@ class RoboFile extends \Robo\Tasks
     $this->taskComposerInstall()->run();
 
     // Contrib modules.
-    $this->installContribModules();
-
-    // Contrib themes.
-    $this->installContribThemes();
-
-    // Languages.
-    $this->enableLanguages();
+//    $this->installContribModules();
+//
+//    // Contrib themes.
+//    $this->installContribThemes();
+//
+//    // Languages.
+//    $this->enableLanguages();
 
     // Custom modules.
 //    $this->installCustomModules();

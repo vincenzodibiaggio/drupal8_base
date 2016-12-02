@@ -18,7 +18,7 @@
   "require": {
     "composer/installers": "^1.0.20",
     "drupal-composer/drupal-scaffold": "~1",
-    "drupal/core": "8.2.3",
+    "drupal/core": "8.1.*",
     "drush/drush": "~8.0",
     "alchemy/zippy": "0.3.5",
     "drupal/console": "~1.0",

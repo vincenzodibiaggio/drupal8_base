@@ -20,32 +20,9 @@ class RoboFile extends \Robo\Tasks
   // Build.
   function build() {
 
-    // Download Drupal.
-    $this->_exec('bin/drupal site:new drupalcore ' . $this->projectProperties['properties']['drupal.version']);
-    $this->taskRsync()
-      ->fromPath('drupalcore/')
-      ->toPath($this->projectProperties['properties']['root'])
-      ->archive()
-      ->verbose()
-      ->compress()
-      ->delete()
-      ->progress()
-      ->humanReadable()
-      ->excludeVcs()
-      ->exclude('autoload.php')
-      ->exclude('composer.json')
-      ->exclude('core')
-      ->exclude('drush')
-      ->exclude('example.gitignore')
-      ->exclude('README.txt')
-      ->exclude('LICENSE.txt')
-      ->exclude('vendor')
-      ->exclude('modules')
-      ->exclude('themes')
-      ->exclude('profiles')
-      ->exclude('sites/default/files')
-      ->run();
-    $this->_exec('rm -rf drupalcore');
+//    $this->_exec('docker-compose stop');
+//    $this->_exec('docker-compose rm -f');
+    $this->_exec('docker-compose up -d');
 
     // Config directory.
     $this->_exec('rm -r ' . $this->escapeArg( __DIR__ . '/config'));
@@ -53,7 +30,7 @@ class RoboFile extends \Robo\Tasks
     $this->_exec('mkdir ' . $this->escapeArg(__DIR__ . '/config/active'));
     $this->_exec('mkdir ' . $this->escapeArg(__DIR__ . '/config/staging'));
     $this->_exec('mkdir ' . $this->escapeArg(__DIR__ . '/config/sync'));
-    $this->_exec('mkdir -m 777 ' . $this->escapeArg(__DIR__ . '/web/sites/default/files'));
+    $this->_exec('mkdir -m 775 ' . $this->escapeArg(__DIR__ . '/web/sites/default/files'));
 
     // Config files.
     $this->_exec('chmod 755 ' . $this->escapeArg(__DIR__ . '/web/sites/default/'));
@@ -93,11 +70,42 @@ class RoboFile extends \Robo\Tasks
     $dropString .= ' --one-database ' . $this->projectProperties['properties']['db.name'];
     $this->_exec($dropString);
 
-    // Install Drupal.
-    $this->_exec('bin/drupal site:install ' . $this->projectProperties['params'] . ' ' . $this->projectProperties['properties']['site.profile']);
+    // Download Drupal.
+    $this->_exec('bin/drush site-install standard ' . $this->projectProperties['params'] . ' -y');
+//    $this->taskRsync()
+//      ->fromPath('drupalcore/')
+//      ->toPath($this->projectProperties['properties']['root'])
+//      ->archive()
+//      ->verbose()
+//      ->compress()
+//      ->delete()
+//      ->progress()
+//      ->humanReadable()
+//      ->excludeVcs()
+//      ->exclude('autoload.php')
+//      ->exclude('composer.json')
+//      ->exclude('core')
+//      ->exclude('drush')
+//      ->exclude('example.gitignore')
+//      ->exclude('README.txt')
+//      ->exclude('LICENSE.txt')
+//      ->exclude('vendor')
+//      ->exclude('modules')
+//      ->exclude('themes')
+//      ->exclude('profiles')
+//      ->exclude('sites/default/files')
+//      ->run();
+//    $this->_exec('rm -rf drupalcore');
 
-    // Update dependencies.
-    $this->taskComposerUpdate()->run();
+
+
+
+
+    // Install Drupal.
+//    $this->_exec('bin/drupal site:install ' . $this->projectProperties['params'] . ' ' . $this->projectProperties['properties']['site.profile']);
+
+    // Install dependencies.
+    $this->taskComposerInstall()->run();
 
     // Contrib modules.
     $this->installContribModules();
@@ -109,10 +117,12 @@ class RoboFile extends \Robo\Tasks
     $this->enableLanguages();
 
     // Custom modules.
-    $this->installCustomModules();
+//    $this->installCustomModules();
 
     // Custom themes.
-    $this->installCustomThemes();
+//    $this->installCustomThemes();
+
+
 
     $this->say('Build complete');
   }
@@ -130,21 +140,27 @@ class RoboFile extends \Robo\Tasks
     $properties['escaped_root_path'] = $this->escapeArg($properties['root']);
 
     $arr_arguments = array(
-      '--langcode='     => $properties['site.langcode'],
-      '--db-type='      => $properties['db.type'],
-      '--db-host='      => $properties['db.host'],
-      '--db-name='      => $properties['db.name'],
-      '--db-user='      => $properties['db.user.name'],
-      '--db-pass='      => $properties['db.user.pass'],
-      '--db-prefix='    => $properties['db.prefix'],
-      '--db-port='      => $properties['db.port'],
+//      '--langcode='     => $properties['site.langcode'],
+//      '--db-type='      => $properties['db.type'],
+//      '--db-host='      => $properties['db.host'],
+//      '--db-name='      => $properties['db.name'],
+//      '--db-user='      => $properties['db.user.name'],
+//      '--db-pass='      => $properties['db.user.pass'],
+//      '--db-prefix='    => $properties['db.prefix'],
+//      '--db-port='      => $properties['db.port'],
       '--site-name='    => $properties['site.name'],
       '--site-mail='    => $properties['site.mail'],
       '--account-name=' => $properties['site.account.name'],
       '--account-mail=' => $properties['site.account.mail'],
       '--account-pass=' => $properties['site.account.pass'],
-      '--env='          => $properties['env'],
+//      '--env='          => $properties['env'],
       '--root='         => $properties['root'],
+      '--db-url='        => $properties['db.type'] . '://' .
+        $properties['db.user.name'] . ':' .
+        $properties['db.user.pass'] . '@' .
+        $properties['db.host'] . ':' .
+        $properties['db.port'] . '/' .
+        $properties['db.name'],
     );
 
     $params_string = '';

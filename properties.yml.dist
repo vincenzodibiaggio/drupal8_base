@@ -1,20 +1,20 @@
-drupal.version: 8.0.5
+drupal.version: 8.2.3
 env: loc
 root: web
-db.user.name: USER
-db.user.pass: PASS
-db.host: HOST
-db.port: PORT
-db.name: DB_NAME
-db.type: DB_TYPE
-db.prefix: DB_PREFIX
-site.name: SITE_NAME
+db.user.name: drupal
+db.user.pass: drupal
+db.host: mysql.drupal8-base.loc
+db.port: 3306
+db.name: drupal
+db.type: mysql
+db.prefix: d8_
+site.name: Drupal-8-base
 site.langcode: en
 site.profile: standard
-site.mail: SITE_MAIL
-site.account.name: USER
-site.account.pass: PASS
-site.account.mail: USER_MAIL
+site.mail: drupal-8base@example.com
+site.account.name: admin
+site.account.pass: admin
+site.account.mail: drupal-8base@example.com
 
 languages:
  - additional_language ('it' for Italian)

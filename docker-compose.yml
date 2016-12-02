@@ -1,0 +1,37 @@
+data:
+  image: busybox
+  volumes:
+    - /var/lib/mysql
+    - .:/var/www/html
+    - ./cache/drush:/root/.drush/cache
+    - ./web/sites/default/files:/var/www/html/web/sites/default/files
+www:
+  build: .
+  dockerfile: Dockerfile
+  hostname: drupal
+  ports:
+    - 80
+  volumes_from:
+    - data
+  links:
+    - mysql
+    - mail
+  environment:
+    - DNSDOCK_ALIAS=www.drupal8-base.loc
+    - ENV_TYPE=LOC
+    - PHP_OPCACHE_ENABLE=1
+mysql:
+  image: percona:5.7
+  environment:
+    - MYSQL_ROOT_PASSWORD=root
+    - MYSQL_DATABASE=drupal
+    - MYSQL_USER=drupal
+    - MYSQL_PASSWORD=drupal
+    - DNSDOCK_ALIAS=mysql.drupal8-base.loc
+  volumes_from:
+    - data
+  command: --max_allowed_packet=256M
+mail:
+  image: mailhog/mailhog:latest
+  environment:
+    - DNSDOCK_ALIAS=mail.drupal8-base.loc

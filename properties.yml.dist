@@ -1,5 +1,4 @@
 drupal.version: 8.2.3
-env: loc
 root: web
 db.user.name: drupal
 db.user.pass: drupal

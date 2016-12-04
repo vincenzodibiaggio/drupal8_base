@@ -70,57 +70,24 @@ class RoboFile extends \Robo\Tasks
 
     // Download Drupal.
     $this->_exec('bin/drush site-install ' . $this->projectProperties['params'] . ' -y');
-//    $this->taskRsync()
-//      ->fromPath('drupalcore/')
-//      ->toPath($this->projectProperties['properties']['root'])
-//      ->archive()
-//      ->verbose()
-//      ->compress()
-//      ->delete()
-//      ->progress()
-//      ->humanReadable()
-//      ->excludeVcs()
-//      ->exclude('autoload.php')
-//      ->exclude('composer.json')
-//      ->exclude('core')
-//      ->exclude('drush')
-//      ->exclude('example.gitignore')
-//      ->exclude('README.txt')
-//      ->exclude('LICENSE.txt')
-//      ->exclude('vendor')
-//      ->exclude('modules')
-//      ->exclude('themes')
-//      ->exclude('profiles')
-//      ->exclude('sites/default/files')
-//      ->run();
-//    $this->_exec('rm -rf drupalcore');
-
-
-
-
-
-    // Install Drupal.
-//    $this->_exec('bin/drupal site:install ' . $this->projectProperties['params'] . ' ' . $this->projectProperties['properties']['site.profile']);
 
     // Install dependencies.
     $this->taskComposerInstall()->run();
 
     // Contrib modules.
-//    $this->installContribModules();
-//
-//    // Contrib themes.
-//    $this->installContribThemes();
-//
-//    // Languages.
-//    $this->enableLanguages();
+    $this->installContribModules();
+
+    // Contrib themes.
+    $this->installContribThemes();
+
+    // Languages.
+    $this->enableLanguages();
 
     // Custom modules.
-//    $this->installCustomModules();
+    $this->installCustomModules();
 
     // Custom themes.
-//    $this->installCustomThemes();
-
-
+    $this->installCustomThemes();
 
     $this->say('Build complete');
   }
@@ -138,20 +105,11 @@ class RoboFile extends \Robo\Tasks
     $properties['escaped_root_path'] = $this->escapeArg($properties['root']);
 
     $arr_arguments = array(
-//      '--langcode='     => $properties['site.langcode'],
-//      '--db-type='      => $properties['db.type'],
-//      '--db-host='      => $properties['db.host'],
-//      '--db-name='      => $properties['db.name'],
-//      '--db-user='      => $properties['db.user.name'],
-//      '--db-pass='      => $properties['db.user.pass'],
-//      '--db-prefix='    => $properties['db.prefix'],
-//      '--db-port='      => $properties['db.port'],
       '--site-name='    => $properties['site.name'],
       '--site-mail='    => $properties['site.mail'],
       '--account-name=' => $properties['site.account.name'],
       '--account-mail=' => $properties['site.account.mail'],
       '--account-pass=' => $properties['site.account.pass'],
-//      '--env='          => $properties['env'],
       '--root='         => $properties['root'],
       '--db-url='        => $properties['db.type'] . '://' .
         $properties['db.user.name'] . ':' .
@@ -177,7 +135,7 @@ class RoboFile extends \Robo\Tasks
     if (isset($this->projectProperties['properties']['languages']) &&
       count($this->projectProperties['properties']['languages']) !== 0) {
       foreach ($this->projectProperties['properties']['languages'] as $language) {
-        $this->_exec('bin/drupal locale:language:add --root=' . $this->projectProperties['properties']['escaped_root_path'] . ' -e=' . $this->projectProperties['properties']['env'] . ' ' . $language)->stopOnFail();
+        $this->_exec('bin/drupal locale:language:add --root=' . $this->projectProperties['properties']['escaped_root_path'] . $language)->stopOnFail();
       }
     }
   }
@@ -187,7 +145,7 @@ class RoboFile extends \Robo\Tasks
     if (isset($this->projectProperties['properties']['modules']['contrib']) &&
       count($this->projectProperties['properties']['modules']['contrib']) !== 0) {
       foreach ($this->projectProperties['properties']['modules']['contrib'] as $module) {
-        $this->_exec('bin/drupal module:install --root=' . $this->projectProperties['properties']['escaped_root_path'] . ' -e=' . $this->projectProperties['properties']['env'] . ' ' . $module)->stopOnFail();
+        $this->_exec('bin/drupal module:install --root=' . $this->projectProperties['properties']['escaped_root_path'] . $module)->stopOnFail();
       }
     }
   }
@@ -197,7 +155,7 @@ class RoboFile extends \Robo\Tasks
     if (isset($this->projectProperties['properties']['modules']['custom']) &&
       count($this->projectProperties['properties']['modules']['custom']) !== 0) {
       foreach ($this->projectProperties['properties']['modules']['custom'] as $module) {
-        $this->_exec('bin/drupal module:install --root=' . $this->projectProperties['properties']['escaped_root_path'] . ' -e=' . $this->projectProperties['properties']['env'] . ' --overwrite-config ' . $module)->stopOnFail();
+        $this->_exec('bin/drupal module:install --root=' . $this->projectProperties['properties']['escaped_root_path'] . ' --overwrite-config ' . $module)->stopOnFail();
       }
     }
   }
@@ -207,7 +165,7 @@ class RoboFile extends \Robo\Tasks
     if (isset($this->projectProperties['properties']['themes']['contrib']) &&
       count($this->projectProperties['properties']['themes']['contrib']) !== 0) {
       foreach ($this->projectProperties['properties']['themes']['contrib'] as $theme) {
-        $this->_exec('bin/drupal theme:install --root=' . $this->projectProperties['properties']['escaped_root_path'] . ' -e=' . $this->projectProperties['properties']['env'] . ' ' . $theme)->stopOnFail();
+        $this->_exec('bin/drupal theme:install --root=' . $this->projectProperties['properties']['escaped_root_path'] . $theme)->stopOnFail();
       }
     }
   }
@@ -217,7 +175,7 @@ class RoboFile extends \Robo\Tasks
     if (isset($this->projectProperties['properties']['themes']['custom']) &&
       count($this->projectProperties['properties']['themes']['custom']) !== 0) {
       foreach ($this->projectProperties['properties']['themes']['custom'] as $theme) {
-        $this->_exec('bin/drupal theme:install --root=' . $this->projectProperties['properties']['escaped_root_path'] . ' -e=' . $this->projectProperties['properties']['env'] . ' ' . $theme)->stopOnFail();
+        $this->_exec('bin/drupal theme:install --root=' . $this->projectProperties['properties']['escaped_root_path'] . $theme)->stopOnFail();
       }
     }
   }
